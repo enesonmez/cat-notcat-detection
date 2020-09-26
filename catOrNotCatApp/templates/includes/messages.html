@@ -1,0 +1,13 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for category, message in messages %}
+
+      <div class="alert" style="background-color:{{category}}; text-size:20px;" id="alertclose">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';" >&times;</span> 
+        <strong>{{message}}</strong> 
+      </div>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}

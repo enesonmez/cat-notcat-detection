@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAT vs NOT CAT</title>
+  <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script type="text/javascript">
+    function kapat() {
+        setTimeout("document.getElementById('alertclose').style.display='none'", 3000);
+    }
+  </script>
+</head>
+<body onload="kapat()">
+
+<div class="container" style="min-height:10px">
+  {% include "includes/messages.html" %}
+</div>
+
+<h2 style="text-align:center">CAT vs NOT CAT</h2>
+
+<div class="card">
+{% if fileUrl %}
+    <img id="output" src="{{ url_for('static', filename='upload/' + fileUrl) }}" alt="John" style="width:100%;height: 280px;">
+    <p>{{sha}}</p>
+{% else %}  
+  <img id="output" src="{{ url_for('static', filename='img/no_image.png') }}" alt="John" style="width:100%;height: 280px;">
+{% endif %}
+
+  {% if not predict %}
+  <form action="/prediction" method="POST" enctype=multipart/form-data>
+    <div class="upload-btn-wrapper" style="max-height:70px">
+      <p><button class="onebutton" style="background-color:#eeeeed;color:black;padding: 20px 10px 5px 10px;"><b>Image Select</b></a></p>
+      <input type="file" name="files" id="file" accept="image/*" onchange="loadFile(event)">
+    </div>
+    <script>
+      var loadFile = function(event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+      };
+    </script>
+  {% endif %}
+    <h1>Enes Sönmez</h1>
+    <p class="title">Computer Engineer Student</p>
+    <p>Karadeniz Technical University</p>
+    <div style="margin: 24px 0;">
+      <a href="https://github.com/enesonmez" target="_blank"><i class="fa fa-github"></i></a> 
+      <a href="https://twitter.com/enesonmezx" target="_blank"><i class="fa fa-twitter"></i></a>  
+      <a href="https://www.linkedin.com/in/enesonmez/" target="_blank"><i class="fa fa-linkedin"></i></a>  
+      <a href="https://www.instagram.com/enesonmez.n/" target="_blank"><i class="fa fa-instagram"></i></a> 
+    </div>
+  {% if not predict %}  
+    <p><input type="submit" class="onebutton" style="padding: 10px 0px" value="Predict"></p>
+  </form>
+  {% else %}
+    <p><a href="/" class="onebutton" style="padding: 10px 0px">Press to reselect picture</a></p>
+  {% endif %}
+</div>
+
+
+{% if predict %}
+
+<div class="card">
+  <h1 class="answer">Predict Answer</h1>
+  <p class="title">
+    {% if predictValue %}
+      CAT  
+    {% else %}  
+      NOT CAT
+    {% endif %}
+  </p>
+  <p>Please state whether it is correct or wrong.</p>
+  <a href="/answer/correct" class="buttons" style="background-color:green">Correct</a>
+  <a href="/answer/wrong" class="buttons" style="background-color:red">Wrong</a>
+  
+</div>
+
+{% endif %}
+
+</body>
+</html>
